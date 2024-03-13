@@ -1,7 +1,5 @@
 package com.model2.mvc.web.product;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -13,9 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -24,6 +20,7 @@ import com.model2.mvc.service.product.ProductService;
 
 
 @Controller
+@RequestMapping("/product/*")
 public class ProductController {
 
 	//Field
@@ -41,28 +38,52 @@ public class ProductController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 	
-	@RequestMapping("/addProduct.do")
-	public String addProduct(@ModelAttribute("ProdVO") Product product) throws Exception{
-		
-		System.out.println("/addProduct.do");
-		
-		String md = product.getManuDate(); 
-		String[] manu = md.split("-");
-		String manudate = manu[0]+manu[1]+manu[2];
-		product.setManuDate(manudate);
-		
-		productService.addProduct(product);
-		
-		
+//	@RequestMapping("/addProduct.do")
+//	public String addProduct(@ModelAttribute("ProdVO") Product product) throws Exception{
+//
+//		System.out.println("/addProduct.do");
+//
+//		String md = product.getManuDate();
+//		String[] manu = md.split("-");
+//		String manudate = manu[0]+manu[1]+manu[2];
+//		product.setManuDate(manudate);
+//
+//		productService.addProduct(product);
+//
+//
+//		return "forward:/product/readProductView.jsp";
+//	}
+
+	@GetMapping(value = "addProduct")
+	public String addProduct() throws Exception{
+		System.out.println("productService.GET");
 		return "forward:/product/readProductView.jsp";
 	}
-	
-	@RequestMapping("/getProduct.do")
-	public String getProduct(@RequestParam int prodNo, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		
+
+	@PostMapping(value = "addProduct")
+	public String addProduct(@ModelAttribute("ProdVO") Product product)throws Exception {
+		System.out.println("addProduct.Post");
+
+		String md = product.getManuDate();
+		String[] manu = md.split("-");
+		String manudate = manu[0] + manu[1] + manu[2];
+		product.setManuDate(manudate);
+
+		productService.addProduct(product);
+		return "forward:/product/readProductView.jsp";
+	}
+
+//	@RequestMapping("/getProduct.do")
+	@GetMapping(value = "getProduct")
+	public String getProduct(@RequestParam int prodNo,
+							 @RequestParam("menu") String menu,
+							 HttpServletRequest request,
+							 HttpServletResponse response,
+							 Model model) throws Exception {
 		System.out.println("/getProduct.do");
 		Product prod = productService.getProduct(prodNo);
-		model.addAttribute("prod",prod);
+		model.addAttribute("prod", prod);
+		model.addAttribute("menu", menu);
 
 		// 최근 본 상품 정보를 쿠키에 저장
 		// cookies 변수 저장
@@ -98,11 +119,12 @@ public class ProductController {
 			Cookie cookie = new Cookie("history", history);
 			response.addCookie(cookie);
 		}
-		
+
 		return "forward:/product/updateProductView.jsp";
 	}
 	
-	@RequestMapping("/updateProduct.do")
+//	@RequestMapping("/updateProduct.do")
+	@PostMapping(value = "updateProduct")
 	public String updateProduct(@ModelAttribute("update") Product prod) throws Exception{
 		
 		System.out.println("/updateProduct.do");
@@ -111,8 +133,9 @@ public class ProductController {
 		return "forward:/product/updateReadProduct.jsp";
 	}
 	
-	@RequestMapping("/updateProductView.do")
-	public String updateProductView(@RequestParam int prodNo, Model model) throws Exception{
+//	@RequestMapping("/updateProductView.do")
+	@GetMapping(value = "updateProduct")
+	public String updateProduct(@RequestParam int prodNo, Model model) throws Exception{
 		
 		System.out.println("/updateProductView.do");
 		Product prod = productService.getProduct(prodNo);
@@ -121,10 +144,13 @@ public class ProductController {
 		return "forward:/product/updateProduct.jsp";
 	}
 	
-	@RequestMapping("/listProduct.do")
-	public String listProduct(@ModelAttribute("Search") Search search, Model model, @RequestParam("menu") String menu) throws Exception{
+	@RequestMapping(value = "listProduct/{menu}")
+	public String listProduct(@ModelAttribute("Search") Search search,
+//							  @RequestParam("menu") String menu,
+							  @PathVariable String menu,
+							  Model model) throws Exception{
 		
-		System.out.println("/listProduct.do");
+		System.out.println("/listProduct.POST / GET");
 		
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);

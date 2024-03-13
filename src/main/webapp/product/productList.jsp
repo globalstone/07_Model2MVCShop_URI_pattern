@@ -42,8 +42,8 @@
 
 	<div style="width: 98%; margin-left: 10px;">
 
-			<c:if test="${ menu=='manage' }">
-		<form name="detailForm" action="/listProduct.do?menu=${ menu }"
+			<c:if test="${ menu =='manage' }">
+		<form name="detailForm" action="/product/listProduct/${menu}"
 			method="post">
 
 			<table width="100%" height="37" border="0" cellpadding="0"
@@ -121,7 +121,7 @@
 					<td></td>
 
 					<td align="left"><a
-						href="/updateProductView.do?prodNo=${ prod.prodNo }&menu=${ menu }">${ prod.prodName }</a></td>
+						href="/product/updateProduct?prodNo=${ prod.prodNo }&menu=${ menu }">${ prod.prodName }</a></td>
 
 					<td></td>
 					<td align="left">${ prod.price }</td>
@@ -167,7 +167,7 @@
 		
 		</c:if>
 		<c:if test="${ menu=='search'}">
-		<form name="detailForm" action="/listProduct.do?menu=${ menu }"
+		<form name="detailForm" action="/product/listProduct/${menu}"
 			method="post">
 
 			<table width="100%" height="37" border="0" cellpadding="0"
@@ -242,7 +242,7 @@
 					<td></td>
 
 					<td align="left"><a
-						href="/getProduct.do?prodNo=${ prod.prodNo }&menu=${ menu }">${ prod.prodName }</a></td>
+						href="/product/getProduct?prodNo=${ prod.prodNo }&menu=${ menu }">${ prod.prodName }</a></td>
 
 					<td></td>
 					<td align="left">${ prod.price }</td>
