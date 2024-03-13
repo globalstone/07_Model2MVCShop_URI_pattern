@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="07.Model2MVCShop(URI,pattern):war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/07_Model2MVCShop_URI_pattern__war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="07.Model2MVCShop(URI,pattern)" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="com.springsource.org.aspectj.weaver-1.6.8.RELEASE" />
+          <element id="library" level="project" name="com.springsource.org.aspectj.weaver-1.6.8.RELEASE1" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="07.Model2MVCShop(URI,pattern)/web/Web" />
+    </root>
+  </artifact>
+</component>
