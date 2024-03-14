@@ -27,7 +27,7 @@ function fncAddPurchase() {
 
 <body>
 
-<form name="addPurchase" method="post" action="/addPurchase.do?tranCode=1">
+<form name="addPurchase" method="post" action="/purchase/addPurchase?tranCode=1">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

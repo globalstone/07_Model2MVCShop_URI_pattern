@@ -32,7 +32,7 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/listPurchase.do" method="post">
+<form name="detailForm" action="/purchase/listPurchase" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -78,14 +78,14 @@
 	%>
 	--%>
 	<c:forEach var="vo" items="${list}">
-	
+
 	<tr class="ct_list_pop">
 		<td align="center">
-			<a href="/getPurchase.do?tranNo=${ vo.tranNo }">${ vo.tranNo }</a>
+			<a href="/purchase/getPurchase?tranNo=${ vo.tranNo }">${ vo.tranNo }</a>
 		</td>
 		<td></td>
 		<td align="left">
-			<a href="/getUser.do?userId=${ vo.buyer.userId }">${ vo.buyer.userId }</a>
+			<a href="/user/getUser?userId=${ vo.buyer.userId }">${ vo.buyer.userId }</a>
 		</td>
 		<td></td>
 		<td align="left">${ vo.receiverName }</td>
@@ -93,7 +93,7 @@
 		<td align="left">${ vo.receiverPhone }</td>
 		<td></td>
 		<td align="left">
-			<a href="/getProduct.do?prodNo=${vo.purchaseProd.prodNo }&menu=search">
+			<a href="/product/getProduct/${vo.purchaseProd.prodNo }/search">
 					상품정보</a>
 		</td>
 		<td></td>
@@ -113,7 +113,7 @@
 		<td align="left">
 			<c:if test="${ !empty vo.tranCode }" >
 			<c:if test="${ fn:trim(vo.tranCode) == 2 }" >
-			<a href="/updateTranCode.do?prodNo=${ vo.purchaseProd.prodNo }&tranCode=3">물건도착</a>
+			<a href="/purchase/updateTranCode?prodNo=${ vo.purchaseProd.prodNo }&tranCode=3">물건도착</a>
 			</c:if>
 			</c:if>
 		</td>

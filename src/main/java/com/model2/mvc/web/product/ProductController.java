@@ -74,9 +74,11 @@ public class ProductController {
 	}
 
 //	@RequestMapping("/getProduct.do")
-	@GetMapping(value = "getProduct")
-	public String getProduct(@RequestParam int prodNo,
-							 @RequestParam("menu") String menu,
+	@GetMapping(value = "getProduct/{prodNo}/{menu}")
+	public String getProduct(@PathVariable int prodNo,
+//							 @RequestParam int prodNo,
+//							 @RequestParam("menu") String menu,
+							 @PathVariable String menu,
 							 HttpServletRequest request,
 							 HttpServletResponse response,
 							 Model model) throws Exception {
@@ -134,8 +136,11 @@ public class ProductController {
 	}
 	
 //	@RequestMapping("/updateProductView.do")
-	@GetMapping(value = "updateProduct")
-	public String updateProduct(@RequestParam int prodNo, Model model) throws Exception{
+	@GetMapping(value = "updateProduct/{prodNo}/{menu}")
+	public String updateProduct(@PathVariable int prodNo,
+								@PathVariable String menu,
+//								@RequestParam int prodNo,
+								Model model) throws Exception{
 		
 		System.out.println("/updateProductView.do");
 		Product prod = productService.getProduct(prodNo);

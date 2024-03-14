@@ -121,7 +121,7 @@
 					<td></td>
 
 					<td align="left"><a
-						href="/product/updateProduct?prodNo=${ prod.prodNo }&menu=${ menu }">${ prod.prodName }</a></td>
+						href="/product/updateProduct/${ prod.prodNo }/${ menu }">${ prod.prodName }</a></td>
 
 					<td></td>
 					<td align="left">${ prod.price }</td>
@@ -130,7 +130,7 @@
 					<td></td>
 					<td align="left"><c:if test="${ ! empty prod.proTranCode }">
 									 <c:if test="${ fn:trim(prod.proTranCode)==1}">
-									 	구매완료 <a href="/updateTranCode.do?prodNo=${ prod.prodNo }&tranCode=2">배송하기</a>
+									 	구매완료 <a href="/purchase/updateTranCode?prodNo=${ prod.prodNo }&tranCode=2">배송하기</a>
 									 </c:if>
 									 <c:if test="${ fn:trim(prod.proTranCode)==2}">
 									 	배송중
@@ -242,7 +242,7 @@
 					<td></td>
 
 					<td align="left"><a
-						href="/product/getProduct?prodNo=${ prod.prodNo }&menu=${ menu }">${ prod.prodName }</a></td>
+						href="/product/getProduct/${ prod.prodNo }/${ menu }">${ prod.prodName }</a></td>
 
 					<td></td>
 					<td align="left">${ prod.price }</td>

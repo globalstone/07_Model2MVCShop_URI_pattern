@@ -12,7 +12,7 @@ Purchase vo = (Purchase)request.getAttribute("addVO");
 
 <body>
 
-<form name="updatePurchase" action="/updatePurchaseView.do?tranNo=${addVO.tranNo }" method="post">
+<form name="updatePurchase" action="/purchase/updatePurchase/${addVO.tranNo }" method="post">
 
 다음과 같이 구매가 되었습니다.
 
