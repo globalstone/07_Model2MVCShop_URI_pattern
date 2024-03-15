@@ -20,79 +20,88 @@
   	<result property="divyDate" column="dlvy_date" jdbcType="DATE"/>
   </resultMap>
 
-<sql id="select-list">
-  SELECT 
-  tran_no, prod_no, buyer_id, payment_option, receiver_name, 
-  receiver_phone, demailaddr, dlvy_request, tran_status_code, 
-  order_data, dlvy_date
-  FROM transaction 
-  ORDER BY tran_no
-</sql>
+    <sql id="select-list">
+      SELECT
+      tran_no, prod_no, buyer_id, payment_option, receiver_name,
+      receiver_phone, demailaddr, dlvy_request, tran_status_code,
+      order_data, dlvy_date
+      FROM transaction
+      ORDER BY tran_no
+    </sql>
 
-<insert id="insertPurchase" parameterType="purchase">
-  INSERT
-  INTO transaction 
-  VALUES (seq_transaction_tran_no.NEXTVAL, #{purchaseProd.prodNo:NUMERIC}, #{buyer.userId:VARCHAR},
-  		  #{paymentOption:CHAR}, #{receiverName:VARCHAR}, #{receiverPhone:VARCHAR}, #{divyAddr:VARCHAR},
-  		  #{divyRequest:VARCHAR}, #{tranCode:VARCHAR}, SYSDATE, #{divyDate:DATE})
-</insert>
+    <insert id="insertPurchase" parameterType="purchase">
+      INSERT
+      INTO transaction
+      VALUES (seq_transaction_tran_no.NEXTVAL, #{purchaseProd.prodNo:NUMERIC}, #{buyer.userId:VARCHAR},
+              #{paymentOption:CHAR}, #{receiverName:VARCHAR}, #{receiverPhone:VARCHAR}, #{divyAddr:VARCHAR},
+              #{divyRequest:VARCHAR}, #{tranCode:VARCHAR}, SYSDATE, #{divyDate:DATE})
+    </insert>
 
-<select id="findPurchase" parameterType="purchase" resultMap="purchaseSelectMap">
-  SELECT
-   tran_no, prod_no, buyer_id, payment_option, receiver_name, 
-  receiver_phone, demailaddr, dlvy_request, tran_status_code, 
-  order_data, dlvy_date
-  FROM transaction
-  WHERE tran_no = #{tranNo}
-</select>
+    <select id="findPurchase" parameterType="purchase" resultMap="purchaseSelectMap">
+      SELECT
+       tran_no, prod_no, buyer_id, payment_option, receiver_name,
+      receiver_phone, demailaddr, dlvy_request, tran_status_code,
+      order_data, dlvy_date
+      FROM transaction
+      WHERE tran_no = #{tranNo}
+    </select>
 
-<update id="updatePurchase" parameterType="purchase">
-  UPDATE transaction
-  <set>
-    payment_option = #{paymentOption:CHAR},
-    receiver_name = #{receiverName:VARCHAR},
-    receiver_phone = #{receiverPhone:VARCHAR},
-    demailaddr = #{divyAddr:VARCHAR},
-    dlvy_request = #{divyRequest:VARCHAR},
-    dlvy_date = #{divyDate:DATE}
-  </set>
-    WHERE tran_no= #{tranNo}
-</update>
+    <update id="updatePurchase" parameterType="purchase">
+      UPDATE transaction
+      <set>
+        payment_option = #{paymentOption:CHAR},
+        receiver_name = #{receiverName:VARCHAR},
+        receiver_phone = #{receiverPhone:VARCHAR},
+        demailaddr = #{divyAddr:VARCHAR},
+        dlvy_request = #{divyRequest:VARCHAR},
+        dlvy_date = #{divyDate:DATE}
+      </set>
+        WHERE tran_no= #{tranNo}
+    </update>
 
-<update id="updateTranCode" parameterType="purchase">
-  UPDATE transaction
-  <set>
-    tran_status_code = #{tranCode},
-  </set>
-    WHERE prod_no= #{purchaseProd.prodNo:NUMERIC}
-</update>
+    <update id="updateTranCode" parameterType="purchase">
+      UPDATE transaction
+      <set>
+        tran_status_code = #{tranCode},
+      </set>
+        WHERE prod_no= #{purchaseProd.prodNo:NUMERIC}
+    </update>
 
 
-<sql id="select-purchaseList">
-    SELECT
-        t.tran_no, t.prod_no, t.buyer_id, t.payment_option, t.receiver_name,
-        t.receiver_phone, t.DEMAILADDR, t.dlvy_request, t.tran_status_code,
-        t.order_data, t.dlvy_date
-    FROM transaction t
-             LEFT JOIN product p ON t.prod_no = p.prod_no
-    WHERE t.buyer_id = #{buyerId}
-</sql>
+    <sql id="select-purchaseList">
+        SELECT
+            t.tran_no, t.prod_no, t.buyer_id, t.payment_option, t.receiver_name,
+            t.receiver_phone, t.DEMAILADDR, t.dlvy_request, t.tran_status_code,
+            t.order_data, t.dlvy_date
+        FROM transaction t
+                 LEFT JOIN product p ON t.prod_no = p.prod_no
+        WHERE t.buyer_id = #{buyerId}
+    </sql>
 
 
     <select id="getPurchaseList" parameterType="map" resultMap="purchaseSelectMap">
         SELECT *
         FROM ( SELECT inner_table.* , ROWNUM AS row_seq
-        FROM ( <include refid="select-purchaseList" />
-        ORDER BY t.tran_no ) inner_table
-        WHERE ROWNUM &lt;= #{search.endRowNum} )
+               FROM (
+                        SELECT
+                            t.tran_no, t.prod_no, t.buyer_id, t.payment_option, t.receiver_name,
+                            t.receiver_phone, t.DEMAILADDR, t.dlvy_request, t.tran_status_code,
+                            t.order_data, t.dlvy_date
+                        FROM transaction t
+                                 LEFT JOIN product p ON t.prod_no = p.prod_no
+                        WHERE t.buyer_id = #{buyerId}
+                        ORDER BY t.tran_no ) inner_table
+               WHERE ROWNUM &lt;= #{search.endRowNum} )
         WHERE row_seq BETWEEN #{search.startRowNum} AND
-        #{search.endRowNum}
+                  #{search.endRowNum}
     </select>
 
-    <select id="getTotalCount" parameterType="search" resultType="int">
+    <select id="getTotalCount" parameterType="map" resultType="int">
         SELECT COUNT(*)
         FROM( SELECT tran_no
               FROM transaction
+              WHERE buyer_id = #{buyerId}
             ) countTable
     </select>
+
 </mapper>

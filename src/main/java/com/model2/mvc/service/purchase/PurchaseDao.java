@@ -16,8 +16,8 @@ public interface PurchaseDao {
 	
 	public void updateTranCode(Purchase purchase) throws Exception;
 
-	public List<Purchase> getPurchaseList(Map<String,Object> map) throws Exception;
+	public List<Purchase> getPurchaseList(Map<String,Object> parmas) throws Exception;
 
-	public int getTotalCount(Search search) throws Exception;
+	public int getTotalCount(Map<String,Object> params) throws Exception;
 
 }

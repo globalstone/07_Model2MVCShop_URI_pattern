@@ -50,15 +50,15 @@ public class PurchaseDaoImpl implements PurchaseDao {
 	}
 
 	@Override
-	public List<Purchase> getPurchaseList(Map<String,Object> map ) throws Exception {
+	public List<Purchase> getPurchaseList(Map<String,Object> params ) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("PurchaseMapper.getPurchaseList",map);
+		return sqlSession.selectList("PurchaseMapper.getPurchaseList",params);
 	}
 
 	@Override
-	public int getTotalCount(Search search) throws Exception {
+	public int getTotalCount(Map<String,Object> params) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("PurchaseMapper.getTotalCount",search);
+		return sqlSession.selectOne("PurchaseMapper.getTotalCount",params);
 	}
 	
 	

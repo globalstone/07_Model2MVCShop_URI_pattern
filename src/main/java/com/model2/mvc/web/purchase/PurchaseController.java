@@ -1,5 +1,6 @@
 package com.model2.mvc.web.purchase;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.model2.mvc.service.user.UserService;
@@ -173,8 +174,11 @@ public class PurchaseController {
 		search.setPageSize(pageSize);
 		User buyerId = (User) session.getAttribute("user");
 
-		Map<String, Object> map = purchaseService.getPurchaseList(search, buyerId.getUserId());
+		Map<String, Object> params = new HashMap<>();
+		params.put("buyerId", buyerId.getUserId());
+		params.put("search", search);
 
+		Map<String, Object> map = purchaseService.getPurchaseList(params);
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize );
 		System.out.println(resultPage);
 
@@ -182,14 +186,11 @@ public class PurchaseController {
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 
-//		System.out.println("List 저장된 값 : "+model.getAttribute("list").toString());
-
 		String viewName = "forward:/purchase/purchaseList.jsp";
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(viewName);
 
 		return modelAndView;
-
 	}
 
 

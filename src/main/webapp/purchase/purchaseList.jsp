@@ -77,11 +77,13 @@
 		Purchase vo = (Purchase)list.get(i);
 	%>
 	--%>
+	<c:set var="i" value="0" />
 	<c:forEach var="vo" items="${list}">
+		<c:set var="i" value="${ i + 1 }" />
 
 	<tr class="ct_list_pop">
 		<td align="center">
-			<a href="/purchase/getPurchase?tranNo=${ vo.tranNo }">${ vo.tranNo }</a>
+			<a href="/purchase/getPurchase?tranNo=${ vo.tranNo }">${ i }</a>
 		</td>
 		<td></td>
 		<td align="left">
