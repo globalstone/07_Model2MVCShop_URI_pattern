@@ -67,7 +67,7 @@ public class ProductController {
 
 	@PostMapping(value = "addProduct")
 	public String addProduct(@ModelAttribute("ProdVO") Product product,
-							 @RequestParam("fileUploadName") MultipartFile file)throws Exception {
+							 @RequestParam("uploadFile") MultipartFile file)throws Exception {
 		System.out.println("addProduct.Post");
 
 		if(file != null & file.getSize() >0) {
@@ -140,7 +140,7 @@ public class ProductController {
 //	@RequestMapping("/updateProduct.do")
 	@PostMapping(value = "updateProduct")
 	public String updateProduct(@ModelAttribute("update") Product prod,
-								@RequestParam("fileUploadName") MultipartFile file) throws Exception{
+								@RequestParam("uploadFile") MultipartFile file) throws Exception{
 
 		if( file != null & file.getSize() >0) {
 			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
