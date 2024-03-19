@@ -93,7 +93,7 @@
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td height="26">
-						<img src="/images/uploadFiles/../../images/empty.GIF"/>
+						<img src="/images/uploadFiles/${ProdVO.fileName }"/>
 					</td>
 				</tr>
 			</table>
