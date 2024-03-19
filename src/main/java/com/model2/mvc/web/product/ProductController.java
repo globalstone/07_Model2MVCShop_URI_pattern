@@ -1,6 +1,7 @@
 package com.model2.mvc.web.product;
 
 import java.util.Map;
+import java.io.File;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -37,6 +39,9 @@ public class ProductController {
 	
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
+
+	@Value("#{commonProperties['uploadTempDir']}")
+	String uploadTempDir;
 	
 //	@RequestMapping("/addProduct.do")
 //	public String addProduct(@ModelAttribute("ProdVO") Product product) throws Exception{
@@ -61,8 +66,15 @@ public class ProductController {
 	}
 
 	@PostMapping(value = "addProduct")
-	public String addProduct(@ModelAttribute("ProdVO") Product product)throws Exception {
+	public String addProduct(@ModelAttribute("ProdVO") Product product,
+							 @RequestParam("fileUploadName") MultipartFile file)throws Exception {
 		System.out.println("addProduct.Post");
+
+		if(file != null & file.getSize() >0) {
+
+			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
+			product.setFileName(file.getOriginalFilename());
+		}
 
 		String md = product.getManuDate();
 		String[] manu = md.split("-");
@@ -127,8 +139,14 @@ public class ProductController {
 	
 //	@RequestMapping("/updateProduct.do")
 	@PostMapping(value = "updateProduct")
-	public String updateProduct(@ModelAttribute("update") Product prod) throws Exception{
-		
+	public String updateProduct(@ModelAttribute("update") Product prod,
+								@RequestParam("fileUploadName") MultipartFile file) throws Exception{
+
+		if( file != null & file.getSize() >0) {
+			file.transferTo(new File(uploadTempDir, file.getOriginalFilename()));
+			prod.setFileName(file.getOriginalFilename());
+		}
+
 		System.out.println("/updateProduct.do");
 		productService.updateProduct(prod);
 		
